@@ -1,0 +1,33 @@
+.navbar {
+  height: 81px;
+  position: sticky;
+  top: 0;
+  border-bottom: 1px solid #eaeaea;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .navbarContent {
+    width: 1024px;
+    display: flex;
+
+    .navbarLogo {
+      font-weight: 700;
+      font-family: sans-serif;
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+      display: flex;
+    }
+
+    .navbarMenu {
+      margin-left: auto;
+
+      :global .ant-menu-item::after {
+        border-bottom: none;
+      }
+    }
+  }
+}
