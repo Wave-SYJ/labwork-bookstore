@@ -1,0 +1,34 @@
+.homePage {
+  margin-top: 100px;
+
+  .homeTitleContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .homeTitles {
+      margin-left: 32px;
+
+      .homeTitle {
+        font-size: 72px;
+        font-weight: 800;
+        text-align: center;
+      }
+
+      .homeSubtitle {
+        font-size: 36px;
+        color: #666666;
+        text-align: center;
+      }
+
+      .homeBtnGroup {
+        margin-top: 30px;
+        text-align: center;
+
+        .homeBtn {
+          width: 120px;
+        }
+      }
+    }
+  }
+}
