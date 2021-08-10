@@ -1,7 +1,6 @@
 package cn.edu.seu.bookstore;
 
-import cn.edu.seu.bookstore.entity.User;
-import cn.edu.seu.bookstore.service.UserService;
+import cn.edu.seu.bookstore.mapper.UserMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,11 +9,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 class LabworkBookstoreServerApplicationTests {
 
     @Autowired
-    private UserService userService;
+    private UserMapper userMapper;
 
     @Test
     void contextLoads() {
-        userService.insertUser(new User(null, "adad", "bbb"));
+        System.out.println(userMapper.findAllUser());
     }
 
 }
