@@ -4,8 +4,10 @@ import lombok.*;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.UUID;
@@ -25,9 +27,13 @@ public class User implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "uuid2")
     private UUID id;
 
+    @NotNull
+    @Length(min = 3, max = 15)
     @Column(name = "username", unique = true, nullable = false)
     private String username;
 
+    @NotNull
+    @Length(min = 6, max = 18)
     @Column(name = "password", nullable = false)
     private String password;
 
