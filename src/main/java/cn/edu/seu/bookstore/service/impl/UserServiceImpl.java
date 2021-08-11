@@ -24,10 +24,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User findUserByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
+    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         if (!StringUtils.hasText(username))
             throw new UsernameNotFoundException("用户不存在");
-        User user = userRepository.findByUsername(username);
+        User user = findUserByUsername(username);
         if (user == null)
             throw new UsernameNotFoundException("用户不存在");
 
