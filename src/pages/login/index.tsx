@@ -5,13 +5,17 @@ import NavBar from '../../components/NavBar';
 import styles from './style.module.scss';
 
 export default function LoginPage() {
+  const handleSubmit = (values: any) => {
+    console.log(values);
+  };
+
   return (
     <>
       <NavBar />
 
       <div className={styles.loginWrapper}>
         <Card title='登录' headStyle={{ textAlign: 'center' }} style={{ width: 500 }}>
-          <Form labelCol={{ span: 4 }} wrapperCol={{ span: 20 }} initialValues={{ remember: true }}>
+          <Form onFinish={handleSubmit} labelCol={{ span: 4 }} wrapperCol={{ span: 20 }} initialValues={{ remember: true }}>
             <Form.Item label='用户名' name='username' rules={[{ required: true, message: '请输入用户名！' }]}>
               <Input prefix={<UserOutlined />} />
             </Form.Item>
@@ -20,8 +24,10 @@ export default function LoginPage() {
               <Input.Password prefix={<LockOutlined />} />
             </Form.Item>
 
-            <Form.Item name='remember' valuePropName='checked' wrapperCol={{ offset: 4, span: 20 }}>
-              <Checkbox style={{ lineHeight: '32px' }}>记住我</Checkbox>
+            <Form.Item wrapperCol={{ offset: 4, span: 20 }}>
+              <Form.Item name='remember' valuePropName='checked' noStyle>
+                <Checkbox style={{ lineHeight: '32px' }}>记住我</Checkbox>
+              </Form.Item>
 
               <Button type='link' style={{ float: 'right' }}>
                 忘记密码
@@ -29,7 +35,9 @@ export default function LoginPage() {
             </Form.Item>
 
             <Form.Item wrapperCol={{ offset: 4 }}>
-              <Button type='primary'>登录</Button>
+              <Button type='primary' htmlType='submit'>
+                登录
+              </Button>
             </Form.Item>
           </Form>
         </Card>
