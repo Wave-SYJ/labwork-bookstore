@@ -1,4 +1,6 @@
 import React from 'react';
+import router from 'next/router';
+import { message } from 'antd';
 import { Card, Form, Input, Button } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import NavBar from '../../components/NavBar';
@@ -7,8 +9,10 @@ import styles from './style.module.scss';
 import { register } from '../../api/system';
 
 export default function RegisterPage() {
-  const handleSubmit = (values: any) => {
-    register(values);
+  const handleSubmit = async (values: any) => {
+    await register(values);
+    message.success('注册成功');
+    router.push('/login');
   };
 
   return (
