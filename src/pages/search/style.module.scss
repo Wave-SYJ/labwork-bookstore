@@ -1,0 +1,68 @@
+.searchWrapper {
+  width: 1024px;
+  margin: 16px auto;
+
+  .paneWrapper {
+    display: flex;
+    margin-top: 8px;
+
+    .leftPanes {
+      width: 256px;
+
+      .leftPaneTitle {
+        margin-bottom: 8px;
+        font-weight: bold;
+      }
+
+      .leftPaneList {
+        margin-bottom: 24px;
+
+        .leftPaneListItem {
+          display: flex;
+
+          .count {
+            margin-left: auto;
+          }
+        }
+      }
+    }
+
+    .rightPane {
+      flex: auto;
+      margin-left: 24px;
+
+      .rightTitle {
+        font-weight: bold;
+      }
+
+      .book {
+        display: flex;
+
+        .bookDesc {
+          flex: auto;
+
+          .bookTitle {
+            font-size: 18px;
+            font-weight: bold;
+          }
+
+          .bookPrice {
+            font-size: 18px;
+            font-weight: bold;
+            color: red;
+          }
+
+          .bookAuthors {
+            .bookAuthor {
+              margin-right: 1em;
+            }
+          }
+
+          .bookAddCartBtn {
+            margin-top: 10px;
+          }
+        }
+      }
+    }
+  }
+}

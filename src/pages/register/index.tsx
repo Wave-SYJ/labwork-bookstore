@@ -7,12 +7,14 @@ import NavBar from '../../components/NavBar';
 import styles from './style.module.scss';
 
 import { register } from '../../api/auth';
+import { login } from '../../utils/token';
 
 export default function RegisterPage() {
   const handleSubmit = async (values: any) => {
     await register(values);
+    await login(values, false);
     message.success('注册成功');
-    router.push('/login');
+    router.push('/cart');
   };
 
   return (

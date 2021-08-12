@@ -1,5 +1,7 @@
 .navbar {
   height: 81px;
+  background-color: white;
+  z-index: 999;
   position: sticky;
   top: 0;
   border-bottom: 1px solid #eaeaea;
@@ -24,8 +26,9 @@
 
     .navbarMenu {
       flex: auto;
+      display: flex;
       justify-content: flex-end;
-      :global .ant-menu-item::after {
+      :global .ant-menu-item {
         border-bottom: none;
       }
     }
