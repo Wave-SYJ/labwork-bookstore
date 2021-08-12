@@ -4,7 +4,7 @@ import cn.edu.seu.bookstore.entity.User;
 
 public interface SystemService {
 
-    User login(User user);
+    String login(User user, boolean rememberMe);
 
     void register(User user);
 }

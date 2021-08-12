@@ -15,3 +15,10 @@ logging:
     cn.edu.seu.bookstore.mapper: DEBUG
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql: DEBUG
+
+project:
+  security:
+    expiration: 3600
+    expiration_remember: 604800
+    jwt_secret_key:
+    token_prefix: "Bearer "

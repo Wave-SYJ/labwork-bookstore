@@ -1,5 +1,8 @@
 package cn.edu.seu.bookstore.controller;
 
+import cn.edu.seu.bookstore.entity.User;
+import cn.edu.seu.bookstore.payload.RestResult;
+import cn.edu.seu.bookstore.security.CurrentUser;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -8,9 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/user")
 public class UserController {
 
-    @GetMapping("test")
-    public String hello() {
-        return "hello";
+    @GetMapping
+    public RestResult<User> getUserInfo(@CurrentUser User user) {
+        return RestResult.success(user);
     }
-
 }

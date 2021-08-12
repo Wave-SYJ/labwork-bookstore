@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 @Slf4j
-public class GlobalExceptionHandler {
+public class GlobalExceptionConfig {
 
     @ExceptionHandler(SimpleException.class)
     public RestResult<String> simpleExceptionHandler(SimpleException e) {
