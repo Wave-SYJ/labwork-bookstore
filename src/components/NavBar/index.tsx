@@ -5,10 +5,13 @@ import { Menu } from 'antd';
 import styles from './style.module.scss';
 import logoImg from '../../assets/img/book.svg';
 import { useRouter } from 'next/router';
+import { useUser } from '../../utils/auth';
 
 export default memo(function NavBar() {
   const router = useRouter();
   const pathMatch = router.pathname.match(/^\/[^\/]*/);
+
+  console.log(useUser());
 
   const handleMenuClicked = ({ key }: { key: string }) => {
     router.push(key);

@@ -1,12 +1,15 @@
 import React from 'react';
-import { Card, Form, Input, Checkbox, Button } from 'antd';
+import { Card, Form, Input, Checkbox, Button, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import NavBar from '../../components/NavBar';
 import styles from './style.module.scss';
 
+import { login } from '../../utils/auth';
+
 export default function LoginPage() {
-  const handleSubmit = (values: any) => {
-    console.log(values);
+  const handleSubmit = async (values: any) => {
+    await login(values, values.remember);
+    message.success('登录成功');
   };
 
   return (

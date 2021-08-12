@@ -6,7 +6,7 @@ import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import NavBar from '../../components/NavBar';
 import styles from './style.module.scss';
 
-import { register } from '../../api/system';
+import { register } from '../../api/auth';
 
 export default function RegisterPage() {
   const handleSubmit = async (values: any) => {

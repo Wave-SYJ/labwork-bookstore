@@ -1,8 +1,17 @@
 import axios from 'axios';
 import RestResult from '../models/RestResult';
+import { getToken } from '../utils/auth';
 import { message } from 'antd';
 
 const instance = axios.create();
+
+instance.interceptors.request.use(function (request) {
+  request.headers = {
+    ...request.headers,
+    'Security-Token': getToken()
+  };
+  return request;
+});
 
 instance.interceptors.response.use(
   function (response) {
