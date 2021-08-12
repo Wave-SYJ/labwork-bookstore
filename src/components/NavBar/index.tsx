@@ -5,15 +5,18 @@ import { Menu } from 'antd';
 import styles from './style.module.scss';
 import logoImg from '../../assets/img/book.svg';
 import { useRouter } from 'next/router';
-import { useUser } from '../../utils/auth';
+import { useUser } from '../../api/auth';
+import { logout } from '../../utils/token';
+import { DownOutlined } from '@ant-design/icons';
 
 export default memo(function NavBar() {
   const router = useRouter();
   const pathMatch = router.pathname.match(/^\/[^\/]*/);
 
-  console.log(useUser());
+  const { user } = useUser();
 
   const handleMenuClicked = ({ key }: { key: string }) => {
+    if (key === 'logout') return logout();
     router.push(key);
   };
 
@@ -39,8 +42,23 @@ export default memo(function NavBar() {
           <Menu.Item key='/cart'>购物车</Menu.Item>
           <Menu.Item key='/checkout'>结帐</Menu.Item>
           <Menu.Item key='/help'>帮助</Menu.Item>
-          <Menu.Item key='/login'>登录</Menu.Item>
-          <Menu.Item key='/register'>注册</Menu.Item>
+          {!user ? (
+            <>
+              <Menu.Item key='/login'>登录</Menu.Item>
+              <Menu.Item key='/register'>注册</Menu.Item>
+            </>
+          ) : (
+            <Menu.SubMenu
+              key='userProfile'
+              title={
+                <>
+                  {user.username} <DownOutlined />
+                </>
+              }
+            >
+              <Menu.Item key='logout'>退出</Menu.Item>
+            </Menu.SubMenu>
+          )}
         </Menu>
       </div>
     </div>

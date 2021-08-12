@@ -4,7 +4,7 @@ import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import NavBar from '../../components/NavBar';
 import styles from './style.module.scss';
 
-import { login } from '../../utils/auth';
+import { login } from '../../utils/token';
 
 export default function LoginPage() {
   const handleSubmit = async (values: any) => {

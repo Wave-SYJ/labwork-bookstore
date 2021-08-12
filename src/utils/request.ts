@@ -1,6 +1,6 @@
 import axios from 'axios';
 import RestResult from '../models/RestResult';
-import { getToken } from '../utils/auth';
+import { getToken, logout } from './token';
 import { message } from 'antd';
 
 const instance = axios.create();
@@ -17,6 +17,8 @@ instance.interceptors.response.use(
   function (response) {
     const data: RestResult = response.data;
     if (data && !data.success) {
+      if (data.code === 401) logout();
+
       message.error(data.data);
       return Promise.reject(response);
     }

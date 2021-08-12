@@ -23,8 +23,8 @@
     }
 
     .navbarMenu {
-      margin-left: auto;
-
+      flex: auto;
+      justify-content: flex-end;
       :global .ant-menu-item::after {
         border-bottom: none;
       }
