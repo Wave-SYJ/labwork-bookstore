@@ -8,7 +8,7 @@ export default interface Book {
   title: string;
   authors: Author[];
   language: Language;
-  isbn: number;
+  isbn: string;
   price: number;
   image: string;
   press: Press;

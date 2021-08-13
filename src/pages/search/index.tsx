@@ -3,7 +3,7 @@ import NavBar from '../../components/NavBar';
 import styles from './style.module.scss';
 import searchData from './data';
 import { List, Input, Image, Button } from 'antd';
-import { SearchOutlined } from '@ant-design/icons';
+import { SearchOutlined, PlusOutlined } from '@ant-design/icons';
 const { Search } = Input;
 
 export default function SearchPage() {
@@ -42,7 +42,7 @@ export default function SearchPage() {
               dataSource={searchData.list}
               renderItem={(book) => (
                 <List.Item className={styles.book} key={book.id}>
-                  <Image height={150} width={150} src={book.image} />
+                  <Image height={175} width={175} alt='book image' src={book.image} />
                   <div className={styles.bookDesc}>
                     <div className={styles.bookTitle}>{book.title}</div>
                     <div className={styles.bookPrice}>¥ {book.price}</div>
@@ -52,10 +52,24 @@ export default function SearchPage() {
                           {author.country && `[${author.country}]`} {author.name} {author.role}
                         </span>
                       ))}
-                      <span>/ {book.press.name}</span>
+                      <span style={{ marginRight: '1em' }}>/</span>
+                      <span>{book.press.name}</span>
                     </div>
-                    <div className={styles.bookLanguage}>语言：{book.language.name}</div>
-                    <Button className={styles.bookAddCartBtn}>加入购物车</Button>
+                    <div className={styles.bookLanguageIsbn}>
+                      <span>语言：{book.language.name}</span>
+                      <span style={{ marginLeft: '1em' }}>ISBN：{book.isbn}</span>
+                    </div>
+                    <div className={styles.bookCategories}>
+                      分类：
+                      {book.categories.map((category) => (
+                        <span className={styles.bookCategory} key={category.id}>
+                          {category.name}
+                        </span>
+                      ))}
+                    </div>
+                    <Button icon={<PlusOutlined />} className={styles.bookAddCartBtn}>
+                      加入购物车
+                    </Button>
                   </div>
                 </List.Item>
               )}

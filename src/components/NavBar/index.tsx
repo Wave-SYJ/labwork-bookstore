@@ -8,6 +8,7 @@ import { useRouter } from 'next/router';
 import { useUser } from '../../api/auth';
 import { logout } from '../../utils/token';
 import { DownOutlined } from '@ant-design/icons';
+import { ROLE_ADMIN } from '../../models/User';
 
 export default memo(function NavBar() {
   const router = useRouter();
@@ -40,7 +41,7 @@ export default memo(function NavBar() {
           <Menu.Item key='/home'>主页</Menu.Item>
           <Menu.Item key='/search'>搜索</Menu.Item>
           <Menu.Item key='/cart'>购物车</Menu.Item>
-          <Menu.Item key='/checkout'>结帐</Menu.Item>
+
           <Menu.Item key='/help'>帮助</Menu.Item>
           {!user ? (
             <>
@@ -56,6 +57,8 @@ export default memo(function NavBar() {
                 </>
               }
             >
+              {user.role === ROLE_ADMIN && <Menu.Item key='/add'>添加书籍</Menu.Item>}
+              <Menu.Item key='/checkout'>结帐</Menu.Item>
               <Menu.Item key='logout'>退出</Menu.Item>
             </Menu.SubMenu>
           )}

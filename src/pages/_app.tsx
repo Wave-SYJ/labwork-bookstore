@@ -3,6 +3,8 @@ import React from 'react';
 import { SWRConfig } from 'swr';
 import '../assets/style/global.scss';
 import request from '../utils/request';
+import { ConfigProvider } from 'antd';
+import zhCN from 'antd/lib/locale/zh_CN';
 
 React.useLayoutEffect = React.useEffect;
 
@@ -14,7 +16,9 @@ function App({ Component, pageProps }: AppProps) {
         fetcher: (url) => request.get(url).then((res) => res.data)
       }}
     >
-      <Component {...pageProps} />
+      <ConfigProvider locale={zhCN}>
+        <Component {...pageProps} />
+      </ConfigProvider>
     </SWRConfig>
   );
 }

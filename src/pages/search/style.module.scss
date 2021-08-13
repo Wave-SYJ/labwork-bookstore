@@ -39,6 +39,7 @@
         display: flex;
 
         .bookDesc {
+          margin-left: 5px;
           flex: auto;
 
           .bookTitle {
@@ -56,6 +57,17 @@
             .bookAuthor {
               margin-right: 1em;
             }
+          }
+
+          .bookCategories {
+            margin-top: 2px;
+            .bookCategory {
+              margin-right: 1em;
+            }
+          }
+
+          .bookLanguageIsbn {
+            margin-top: 2px;
           }
 
           .bookAddCartBtn {
