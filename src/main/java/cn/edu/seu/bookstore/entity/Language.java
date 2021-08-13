@@ -27,4 +27,12 @@ public class Language {
     @Column(name = "name", nullable = false)
     private String name;
 
+    public Language(UUID id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public Language(String name) {
+        this.name = name;
+    }
 }

@@ -38,7 +38,7 @@ public class Book implements Serializable {
 
     @NotNull
     @Column(name = "isbn", nullable = false)
-    private Integer isbn;
+    private String isbn;
 
     @NotNull
     @Column(name = "price", nullable = false, precision = 2)

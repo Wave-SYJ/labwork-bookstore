@@ -1,5 +1,6 @@
 package cn.edu.seu.bookstore.entity;
 
+import cn.edu.seu.bookstore.utils.SecurityUtils;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -7,15 +8,13 @@ import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Table(name = "t_user")
@@ -42,10 +41,34 @@ public class User implements Serializable, UserDetails {
     @Column(name = "password", nullable = false)
     private String password;
 
+    @NotNull
+    @Column(name = "role", nullable = false)
+    private Integer role;
+
     public User(UUID id, String username, String password) {
         this.id = id;
         this.username = username;
         this.password = password;
+        this.role = Role.ROLE_ORDINARY.value();
+    }
+
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+        this.role = Role.ROLE_ORDINARY.value();
+    }
+
+    public User(String username, String password, Integer role) {
+        this.username = username;
+        this.password = password;
+        this.role = role;
+    }
+
+    public User(UUID id, String username, String password, Integer role) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.role = role;
     }
 
     @Override
@@ -53,17 +76,17 @@ public class User implements Serializable, UserDetails {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(username, user.username) && Objects.equals(password, user.password);
+        return Objects.equals(id, user.id) && Objects.equals(username, user.username) && Objects.equals(password, user.password) && Objects.equals(role, user.role);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, password);
+        return Objects.hash(id, username, password, role);
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return new ArrayList<>();
+        return SecurityUtils.getAuthoritiesByRole(role);
     }
 
     @Override
@@ -84,5 +107,20 @@ public class User implements Serializable, UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public enum Role {
+        ROLE_ORDINARY(0),
+        ROLE_ADMIN(1);
+
+        private final Integer value;
+
+        public Integer value() {
+            return value;
+        }
+
+        Role(Integer i) {
+            this.value = i;
+        }
     }
 }

@@ -29,4 +29,12 @@ public class Category implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
+    public Category(UUID id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public Category(String name) {
+        this.name = name;
+    }
 }

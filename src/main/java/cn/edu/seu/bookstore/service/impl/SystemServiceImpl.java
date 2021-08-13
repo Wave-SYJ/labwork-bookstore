@@ -33,6 +33,7 @@ public class SystemServiceImpl implements SystemService {
         if (null != userService.findUserByUsername(user.getUsername()))
             throw new SimpleException(HttpStatus.BAD_REQUEST, String.format("用户名 %s 已被占用", user.getUsername()));
         user.setPassword(securityUtils.encodePassword(user.getPassword()));
+        user.setRole(User.Role.ROLE_ORDINARY.value());
         userService.insertUser(user);
     }
 }

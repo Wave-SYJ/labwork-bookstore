@@ -2,6 +2,7 @@ package cn.edu.seu.bookstore.utils;
 
 import cn.edu.seu.bookstore.entity.User;
 import cn.edu.seu.bookstore.security.SecurityConstants;
+import cn.edu.seu.bookstore.service.UserService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -27,6 +28,9 @@ public class SecurityUtils {
     @Autowired
     private PasswordEncoder encoder;
 
+    @Autowired
+    private UserService userService;
+
     private SecurityConstants constants;
 
     @Autowired
@@ -49,14 +53,8 @@ public class SecurityUtils {
         Date createdDate = new Date();
         Date expirationDate = new Date(createdDate.getTime() + expiration);
 
-        List<String> authorities = user.getAuthorities()
-                .stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.toList());
-
         String tokenContent = Jwts.builder()
                 .signWith(SECRET_KEY, SignatureAlgorithm.HS256)
-                .claim(constants.AUTH_CLAIMS, String.join(",", authorities))
                 .setId(user.getId().toString())
                 .setIssuer("Wave-SYJ")
                 .setIssuedAt(createdDate)
@@ -73,18 +71,18 @@ public class SecurityUtils {
                 .parseClaimsJws(token)
                 .getBody();
 
-        String auth = (String) claims.get(constants.AUTH_CLAIMS);
-        List<SimpleGrantedAuthority> authorities =
-                StringUtils.hasText(auth) ?
-                        Arrays.stream(auth.split(","))
-                                .map(SimpleGrantedAuthority::new)
-                                .collect(Collectors.toList())
-                        : new ArrayList<>();
-
-        String username = claims.getSubject();
         UUID id = UUID.fromString(claims.getId());
+        User user = userService.findUserById(id);
+        user.setPassword(null);
+        return new UsernamePasswordAuthenticationToken(user, token, user.getAuthorities());
+    }
 
-        return new UsernamePasswordAuthenticationToken(new User(id, username, null), token, authorities);
+    public static List<SimpleGrantedAuthority> getAuthoritiesByRole(Integer role) {
+        if (role == null || User.Role.ROLE_ORDINARY.value().equals(role))
+            return List.of(new SimpleGrantedAuthority(User.Role.ROLE_ORDINARY.name()));
+        if (User.Role.ROLE_ADMIN.value().equals(role))
+            return List.of(new SimpleGrantedAuthority(User.Role.ROLE_ADMIN.name()));
+        return new ArrayList<>();
     }
 
 }

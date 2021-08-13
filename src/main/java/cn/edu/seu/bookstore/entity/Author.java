@@ -32,4 +32,16 @@ public class Author {
     @Column(name = "country")
     private String country;
 
+    public Author(UUID id, String name, String role, String country) {
+        this.id = id;
+        this.name = name;
+        this.role = role;
+        this.country = country;
+    }
+
+    public Author(String name, String role, String country) {
+        this.name = name;
+        this.role = role;
+        this.country = country;
+    }
 }
