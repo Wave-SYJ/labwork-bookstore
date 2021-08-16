@@ -1,6 +1,7 @@
 package cn.edu.seu.bookstore.entity;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
@@ -10,6 +11,7 @@ import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 @Entity
+@NoArgsConstructor
 @Getter
 @Setter
 @ToString
