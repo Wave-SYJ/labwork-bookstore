@@ -30,11 +30,11 @@ public class Book implements Serializable {
     @Column(name = "title", nullable = false)
     private String title;
 
-    @ManyToMany
+    @OneToMany(mappedBy = "book")
     private List<Author> authors;
 
-    @ManyToOne
-    private Language language;
+    @Column(name = "language", nullable = false)
+    private String language;
 
     @NotNull
     @Column(name = "isbn", nullable = false)
@@ -47,9 +47,9 @@ public class Book implements Serializable {
     @Column(name = "image")
     private String image;
 
-    @ManyToOne
-    private Press press;
+    @Column(name = "press")
+    private String press;
 
-    @ManyToMany
+    @OneToMany(mappedBy = "book")
     private List<Category> categories;
 }

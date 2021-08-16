@@ -29,6 +29,9 @@ public class Category implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @ManyToOne
+    private Book book;
+
     public Category(UUID id, String name) {
         this.id = id;
         this.name = name;

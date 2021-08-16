@@ -34,6 +34,9 @@ public class Author {
     @Column(name = "country")
     private String country;
 
+    @ManyToOne
+    private Book book;
+
     public Author(UUID id, String name, String role, String country) {
         this.id = id;
         this.name = name;

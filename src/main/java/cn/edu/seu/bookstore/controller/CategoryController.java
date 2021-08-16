@@ -1,8 +1,8 @@
 package cn.edu.seu.bookstore.controller;
 
-import cn.edu.seu.bookstore.entity.Press;
+import cn.edu.seu.bookstore.entity.Category;
 import cn.edu.seu.bookstore.payload.RestResult;
-import cn.edu.seu.bookstore.service.PressService;
+import cn.edu.seu.bookstore.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,17 +13,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/press")
-public class PressController {
+@RequestMapping("/category")
+public class CategoryController {
 
     @Autowired
-    private PressService pressService;
+    private CategoryService categoryService;
 
     @GetMapping
-    public RestResult<List<Press>> findByName(String name) {
-        if (!StringUtils.hasText(name))
-            return RestResult.success(new ArrayList<>());
-        return RestResult.success(pressService.findByName(name));
+    public RestResult<List<Category>> findByName(String name) {
+        return RestResult.success(categoryService.findByName(name));
     }
 
 }
