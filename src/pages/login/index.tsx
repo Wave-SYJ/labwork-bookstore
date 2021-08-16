@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, Form, Input, Checkbox, Button, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
-import NavBar from '../../components/NavBar';
+import NavBar from '../../components/GlobalNavBar';
 import styles from './style.module.scss';
 
 import { login } from '../../utils/token';

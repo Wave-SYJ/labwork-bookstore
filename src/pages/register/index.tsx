@@ -3,7 +3,7 @@ import router from 'next/router';
 import { message } from 'antd';
 import { Card, Form, Input, Button } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
-import NavBar from '../../components/NavBar';
+import NavBar from '../../components/GlobalNavBar';
 import styles from './style.module.scss';
 
 import { register } from '../../api/auth';

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useRouter } from 'next/router';
-import NavBar from '../../components/NavBar';
+import NavBar from '../../components/GlobalNavBar';
 import styles from './style.module.scss';
 import { Button } from 'antd';
 import logoImg from '../../assets/img/book.svg';

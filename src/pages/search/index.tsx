@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import NavBar from '../../components/NavBar';
+import NavBar from '../../components/GlobalNavBar';
 import styles from './style.module.scss';
 import searchData from './data';
 import { List, Input, Image, Button } from 'antd';

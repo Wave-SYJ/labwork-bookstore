@@ -26,10 +26,9 @@
 
     .navbarMenu {
       flex: auto;
-      display: flex;
       justify-content: flex-end;
-      :global .ant-menu-item,
-      :global .ant-menu-submenu {
+      :global .ant-menu-item::after,
+      :global .ant-menu-submenu::after {
         border-bottom: none;
       }
     }

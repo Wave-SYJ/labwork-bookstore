@@ -1,6 +1,5 @@
-import { Button, Card, Form, Input, InputNumber, Select } from 'antd';
-import React, { useState } from 'react';
-import NavBar from '../../components/NavBar';
+import { Button, Card, Form, Input, InputNumber, message } from 'antd';
+import NavBar from '../../components/GlobalNavBar';
 import styles from './style.module.scss';
 import InputAuthors from '../../components/InputAuthors';
 import { insertBook } from '../../api/book';
@@ -13,6 +12,7 @@ export default function CheckoutPage() {
         .filter((category: string) => !!category)
         .map((category: string) => ({ name: category }));
     await insertBook(values);
+    message.success('添加书籍成功！');
   };
 
   return (
