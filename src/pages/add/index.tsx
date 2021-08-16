@@ -1,36 +1,18 @@
-import { Button, Card, Divider, Form, Input, InputNumber, Select } from 'antd';
-import React, { ReactNode, useState } from 'react';
+import { Button, Card, Form, Input, InputNumber, Select } from 'antd';
+import React, { useState } from 'react';
 import NavBar from '../../components/NavBar';
 import styles from './style.module.scss';
 import InputAuthors from '../../components/InputAuthors';
-import Language from '../../models/Language';
-import { getLanguagesByName } from '../../api/language';
-import Press from '../../models/Press';
-import { getPressesByName } from '../../api/press';
-import { getTypesByName } from '../../api/type';
-import Category from '../../models/Category';
+import { insertBook } from '../../api/book';
 
 export default function CheckoutPage() {
-  const handleSearchLanguages = async (value: string) => {
-    const { data } = await getLanguagesByName(value);
-    return data;
-  };
-
-  const handleSearchPress = async (value: string) => {
-    const { data } = await getPressesByName(value);
-    return data;
-  };
-
-  const handleSearchType = async (value: string) => {
-    const { data } = await getTypesByName(value);
-    return data;
-  };
-
-  const [languageList, setLanguageList] = useState([] as Language[]);
-  const [pressList, setPressList] = useState([] as Press[]);
-
   const handleSubmit = async (values: any) => {
-    console.log(values);
+    if (values && values.categories)
+      values.categories = values.categories
+        .split(' ')
+        .filter((category: string) => !!category)
+        .map((category: string) => ({ name: category }));
+    await insertBook(values);
   };
 
   return (
@@ -45,22 +27,8 @@ export default function CheckoutPage() {
             <Form.Item label='作者' name='title' rules={[{ required: true, message: '请输入作者' }]}>
               <InputAuthors name='authors' />
             </Form.Item>
-            <Form.Item label='语言' name={['language', 'id']}>
-              <Select
-                showSearch
-                placeholder='输入语言名以搜索'
-                defaultActiveFirstOption={false}
-                showArrow={false}
-                filterOption={false}
-                onSearch={async (value: string) => setLanguageList(await handleSearchLanguages(value))}
-                notFoundContent={null}
-              >
-                {languageList.map((item) => (
-                  <Select.Option key={item.id} value={item.id}>
-                    {item.name}
-                  </Select.Option>
-                ))}
-              </Select>
+            <Form.Item label='语言' name='language'>
+              <Input placeholder='语言名，如“中文”“英文”或“德文”等' />
             </Form.Item>
             <Form.Item label='ISBN' name='isbn' rules={[{ required: true, message: '请输入 ISBN' }]}>
               <Input />
@@ -71,26 +39,12 @@ export default function CheckoutPage() {
             <Form.Item label='图片' name='image'>
               <Input />
             </Form.Item>
-            <Form.Item label='出版社' name={['press', 'id']}>
-              <Select
-                showSearch
-                placeholder='输入出版社名以搜索'
-                defaultActiveFirstOption={false}
-                showArrow={false}
-                filterOption={false}
-                onSearch={async (value: string) => setPressList(await handleSearchPress(value))}
-                notFoundContent={null}
-              >
-                {pressList.map((item) => (
-                  <Select.Option key={item.id} value={item.id}>
-                    {item.name}
-                  </Select.Option>
-                ))}
-              </Select>
+            <Form.Item label='出版社' name='press'>
+              <Input placeholder='出版社名' />
             </Form.Item>
-            {/* <Form.Item label='分类' name='categories'>
-              <SearchSelect placeholder='输入分类名以搜索' mode='tags' onSearch={handleSearchType} />
-            </Form.Item> */}
+            <Form.Item label='分类' name='categories'>
+              <Input placeholder='分类名，以空格分割' />
+            </Form.Item>
             <Form.Item wrapperCol={{ offset: 4, span: 20 }}>
               <Button type='primary' htmlType='submit'>
                 提交

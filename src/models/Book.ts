@@ -1,16 +1,14 @@
 import Author from './Author';
 import Category from './Category';
-import Language from './Language';
-import Press from './Press';
 
 export default interface Book {
   id: string;
   title: string;
   authors: Author[];
-  language: Language;
+  language: string;
   isbn: string;
   price: number;
   image: string;
-  press: Press;
+  press: string;
   categories: Category[];
 }
