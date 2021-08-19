@@ -5,6 +5,8 @@ import InputAuthors from '../../components/InputAuthors';
 import { insertBook } from '../../api/book';
 
 export default function CheckoutPage() {
+  const [form] = Form.useForm();
+
   const handleSubmit = async (values: any) => {
     if (values && values.categories)
       values.categories = values.categories
@@ -12,6 +14,7 @@ export default function CheckoutPage() {
         .filter((category: string) => !!category)
         .map((category: string) => ({ name: category }));
     await insertBook(values);
+    form.resetFields();
     message.success('添加书籍成功！');
   };
 
@@ -20,7 +23,7 @@ export default function CheckoutPage() {
       <NavBar />
       <div className={styles.addWrapper}>
         <Card title='添加书籍' headStyle={{ textAlign: 'center' }} style={{ width: 500 }}>
-          <Form onFinish={handleSubmit} labelCol={{ span: 4 }} wrapperCol={{ span: 20 }}>
+          <Form form={form} onFinish={handleSubmit} labelCol={{ span: 4 }} wrapperCol={{ span: 20 }}>
             <Form.Item label='标题' name='title' rules={[{ required: true, message: '请输入标题' }]}>
               <Input />
             </Form.Item>
