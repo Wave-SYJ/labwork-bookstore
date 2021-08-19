@@ -42,7 +42,19 @@ export default memo(function NavBar() {
           <Menu.Item key='/search'>搜索</Menu.Item>
           <Menu.Item key='/cart'>购物车</Menu.Item>
 
-          <Menu.Item key='/help'>帮助</Menu.Item>
+          <Menu.SubMenu
+            key='/help'
+            title={
+              <>
+                帮助 <DownOutlined />
+              </>
+            }
+          >
+            <Menu.Item key='/help/introduction'>网站简介</Menu.Item>
+            <Menu.Item key='/help/faq'>常见问题</Menu.Item>
+            <Menu.Item key='/help/rules'>用户守则</Menu.Item>
+            <Menu.Item key='/help/contact'>联系我们</Menu.Item>
+          </Menu.SubMenu>
           {!user ? (
             <>
               <Menu.Item key='/login'>登录</Menu.Item>

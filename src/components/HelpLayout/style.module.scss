@@ -1,9 +1,16 @@
 .mainWrapper {
   width: 1024px;
   margin: 16px auto;
+  display: flex;
 
   .menu {
-    width: 256px;
+    flex: none;
+    width: 220px;
     border-right: none !important;
+  }
+
+  .content {
+    margin-left: 24px;
+    flex: auto;
   }
 }

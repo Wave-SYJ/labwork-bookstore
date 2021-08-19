@@ -6,26 +6,26 @@ import styles from './style.module.scss';
 
 export default memo(function HelpMenuBar(props: { children?: ReactNode }) {
   const router = useRouter();
-  const page = router.query.page as string;
+  const page = router.pathname.match(/^\/[^\/]*\/[^\/]*/);
 
   const handleMenuClicked = ({ key }: { key: React.Key }) => {
-    router.push('/help/' + (key as string));
+    router.push(key as string);
   };
 
   return (
     <>
       <GlobalNavBar />
       <div className={styles.mainWrapper}>
-        <Menu className={styles.menu} selectedKeys={page ? [page] : undefined} onClick={handleMenuClicked}>
+        <Menu className={styles.menu} selectedKeys={page ? [page[0]] : undefined} onClick={handleMenuClicked}>
           <Menu.ItemGroup title='帮助中心'>
-            <Menu.Item key='introduction'>网站简介</Menu.Item>
-            <Menu.Item key='faq'>常见问题</Menu.Item>
-            <Menu.Item key='rules'>用户守则</Menu.Item>
-            <Menu.Item key='contact'>联系我们</Menu.Item>
+            <Menu.Item key='/help/introduction'>网站简介</Menu.Item>
+            <Menu.Item key='/help/faq'>常见问题</Menu.Item>
+            <Menu.Item key='/help/rules'>用户守则</Menu.Item>
+            <Menu.Item key='/help/contact'>联系我们</Menu.Item>
           </Menu.ItemGroup>
         </Menu>
 
-        {props.children}
+        <div className={styles.content}>{props.children}</div>
       </div>
     </>
   );
