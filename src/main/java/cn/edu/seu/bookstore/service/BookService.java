@@ -8,6 +8,6 @@ import java.util.List;
 public interface BookService {
 
     void insertBook(Book book);
-    SearchBookPayload searchBook(String keyword);
+    SearchBookPayload searchBook(String keyword, Integer pageNum, Integer pageSize);
 
 }

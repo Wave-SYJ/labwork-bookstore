@@ -5,10 +5,11 @@ import cn.edu.seu.bookstore.payload.SearchBookPayload;
 import cn.edu.seu.bookstore.repository.BookRepository;
 import cn.edu.seu.bookstore.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -26,9 +27,17 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public SearchBookPayload searchBook(String keyword) {
+    public SearchBookPayload searchBook(String keyword, Integer pageNum, Integer pageSize) {
+        if (pageNum == null) pageNum = 1;
+        if (pageSize == null) pageSize = 10;
+        Page<Book> bookPage = bookRepository.findAll(PageRequest.of(pageNum, pageSize));
+
         SearchBookPayload payload = new SearchBookPayload();
-        payload.setList(bookRepository.findAll());
+        payload.setPageNum(pageNum);
+        payload.setPageSize(pageSize);
+        payload.setPageCount(bookPage.getTotalPages());
+        payload.setTotal(bookPage.getTotalElements());
+        payload.setList(bookPage.toList());
         payload.setStatistics(new ArrayList<>());
         return payload;
     }

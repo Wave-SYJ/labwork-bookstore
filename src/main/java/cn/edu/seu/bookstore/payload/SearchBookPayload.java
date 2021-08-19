@@ -13,7 +13,7 @@ public class SearchBookPayload implements Serializable {
     private static final long serialVersionUID = 1668973474630411329L;
 
     // 总数
-    private Integer total;
+    private Long total;
 
     // 分页
     private Integer pageNum;
