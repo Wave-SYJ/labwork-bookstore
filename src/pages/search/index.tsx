@@ -1,18 +1,39 @@
 import React, { Fragment } from 'react';
 import NavBar from '../../components/GlobalNavBar';
 import styles from './style.module.scss';
-import searchData from './data';
 import { List, Input, Image, Button } from 'antd';
 import { SearchOutlined, PlusOutlined } from '@ant-design/icons';
+import { useRouter } from 'next/router';
 const { Search } = Input;
+import { GetServerSideProps } from 'next';
+import { searchBook } from '../../api/book';
+import SearchBookPayload from '../../models/SearchBookPayload';
 
-export default function SearchPage() {
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const searchData = await searchBook();
+
+  return {
+    props: {
+      searchData
+    }
+  };
+};
+
+export default function SearchPage({ searchData }: { searchData: SearchBookPayload }) {
+  const router = useRouter();
+  console.log(searchData);
+
   return (
     <>
       <NavBar />
 
       <div className={styles.searchWrapper}>
-        <Search prefix={<SearchOutlined />} placeholder='书名、作者、出版社、ISBN' enterButton='搜索' size='large' />
+        <div style={{ display: 'flex' }}>
+          <Search prefix={<SearchOutlined />} placeholder='书名、作者、出版社、ISBN' enterButton='搜索' size='large' />
+          <Button onClick={() => router.push('/add')} style={{ marginLeft: '10px' }} size='large'>
+            添加书籍
+          </Button>
+        </div>
         <div className={styles.paneWrapper}>
           <div className={styles.leftPanes}>
             {searchData.statistics.map((paneData) => (
@@ -25,7 +46,7 @@ export default function SearchPage() {
                   dataSource={paneData.items}
                   renderItem={(item) => (
                     <List.Item key={item.id} className={styles.leftPaneListItem}>
-                      <span className={styles.catagory}>{item.catagory}</span>
+                      <span className={styles.category}>{item.category}</span>
                       <span className={styles.count}>{item.count}</span>
                     </List.Item>
                   )}
@@ -53,10 +74,10 @@ export default function SearchPage() {
                         </span>
                       ))}
                       <span style={{ marginRight: '1em' }}>/</span>
-                      <span>{book.press.name}</span>
+                      <span>{book.press}</span>
                     </div>
                     <div className={styles.bookLanguageIsbn}>
-                      <span>语言：{book.language.name}</span>
+                      <span>语言：{book.language}</span>
                       <span style={{ marginLeft: '1em' }}>ISBN：{book.isbn}</span>
                     </div>
                     <div className={styles.bookCategories}>

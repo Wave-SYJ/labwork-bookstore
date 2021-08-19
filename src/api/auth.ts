@@ -10,7 +10,7 @@ export async function login(form: { username: String; password: String }, rememb
     method: 'post',
     data: form
   });
-  return data as User;
+  return data.data as User;
 }
 
 export async function register(form: { username: String; password: String }) {

@@ -5,62 +5,7 @@ const data = {
   pageNum: 1,
   pageSize: 20,
   pageCount: 100,
-  list: [
-    {
-      id: '111',
-      title: '昆虫记',
-      authors: [
-        {
-          id: 'aaa',
-          name: '法布尔',
-          country: '法',
-          role: '著'
-        },
-        {
-          id: 'aaa',
-          name: '陈筱卿',
-          country: null,
-          role: '译'
-        }
-      ],
-      image: 'http://img3m9.ddimg.cn/9/34/25190559-1_b_16.jpg',
-      isbn: '9787517823810',
-      price: 25.6,
-      press: {
-        id: 'press',
-        name: '浙江工商大学出版社'
-      },
-      categories: [{ id: 'aaa', name: '语文' }],
-      language: { id: '1', name: '中文' }
-    },
-    {
-      id: '111',
-      title: '昆虫记',
-      authors: [
-        {
-          id: 'aaa',
-          name: '法布尔',
-          country: '法',
-          role: '著'
-        },
-        {
-          id: 'aaa',
-          name: '陈筱卿',
-          country: null,
-          role: '译'
-        }
-      ],
-      image: 'http://img3m9.ddimg.cn/9/34/25190559-1_b_16.jpg',
-      isbn: 9787517823810,
-      price: 25.6,
-      press: {
-        id: 'press',
-        name: '浙江工商大学出版社'
-      },
-      categories: [{ id: 'aaa', name: '语文' }],
-      language: { id: '1', name: '中文' }
-    }
-  ] as Book[],
+  list: [] as Book[],
   statistics: [
     {
       type: 'language',
