@@ -1,5 +1,6 @@
 package cn.edu.seu.bookstore.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -30,6 +31,7 @@ public class Category implements Serializable {
     private String name;
 
     @ManyToOne
+    @JsonIgnore
     private Book book;
 
     public Category(UUID id, String name) {

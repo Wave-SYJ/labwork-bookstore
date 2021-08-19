@@ -30,7 +30,7 @@ public class Book implements Serializable {
     @Column(name = "title", nullable = false)
     private String title;
 
-    @OneToMany(mappedBy = "book")
+    @OneToMany(mappedBy = "book", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Author> authors;
 
     @Column(name = "language", nullable = false)
@@ -41,7 +41,7 @@ public class Book implements Serializable {
     private String isbn;
 
     @NotNull
-    @Column(name = "price", nullable = false, precision = 2)
+    @Column(name = "price", nullable = false, scale = 2)
     private BigDecimal price;
 
     @Column(name = "image")
@@ -50,6 +50,6 @@ public class Book implements Serializable {
     @Column(name = "press")
     private String press;
 
-    @OneToMany(mappedBy = "book")
+    @OneToMany(mappedBy = "book", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Category> categories;
 }

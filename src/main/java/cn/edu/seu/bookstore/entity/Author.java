@@ -1,5 +1,6 @@
 package cn.edu.seu.bookstore.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -35,6 +36,7 @@ public class Author {
     private String country;
 
     @ManyToOne
+    @JsonIgnore
     private Book book;
 
     public Author(UUID id, String name, String role, String country) {
