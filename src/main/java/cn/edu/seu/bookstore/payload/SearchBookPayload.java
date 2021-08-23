@@ -41,11 +41,28 @@ public class SearchBookPayload implements Serializable {
             this.items = new LinkedList<>();
         }
 
+        public Statistics(String type, String title, List<StatisticsItem> items) {
+            this.type = type;
+            this.title = title;
+            this.items = items;
+        }
+
         @Data
         public static class StatisticsItem {
             private UUID id;
             private String category;
-            private Integer count;
+            private Long count;
+
+            public StatisticsItem(String category, Long count) {
+                this.category = category;
+                this.count = count;
+            }
+
+            public StatisticsItem(UUID id, String category, Long count) {
+                this.id = id;
+                this.category = category;
+                this.count = count;
+            }
         }
     }
 }
