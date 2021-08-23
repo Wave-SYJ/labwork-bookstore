@@ -26,8 +26,8 @@ public class BookController {
     }
 
     @GetMapping
-    public RestResult<SearchBookPayload> searchBook() {
-        return RestResult.success(bookService.searchBook("", 1, 2));
+    public RestResult<SearchBookPayload> searchBook(String keyword, Integer pageNum, Integer pageSize) {
+        return RestResult.success(bookService.searchBook(keyword, pageNum, pageSize));
     }
 
 }

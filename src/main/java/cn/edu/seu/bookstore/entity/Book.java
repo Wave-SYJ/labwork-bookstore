@@ -22,8 +22,7 @@ public class Book implements Serializable {
     private static final long serialVersionUID = 809494834345025947L;
 
     @Id
-    @GenericGenerator(name = "uuid2", strategy = "uuid2")
-    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "uuid2")
+    @GeneratedValue(generator = "uuid2")
     private UUID id;
 
     @NotNull

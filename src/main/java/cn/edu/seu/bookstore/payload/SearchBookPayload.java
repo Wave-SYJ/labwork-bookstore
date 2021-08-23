@@ -3,8 +3,10 @@ package cn.edu.seu.bookstore.payload;
 import cn.edu.seu.bookstore.entity.Book;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,10 +29,17 @@ public class SearchBookPayload implements Serializable {
     private List<Statistics> statistics;
 
     @Data
+    @NoArgsConstructor
     public static class Statistics {
         private String type;
         private String title;
         private List<StatisticsItem> items;
+
+        public Statistics(String type, String title) {
+            this.type = type;
+            this.title = title;
+            this.items = new LinkedList<>();
+        }
 
         @Data
         public static class StatisticsItem {

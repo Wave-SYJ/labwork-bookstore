@@ -20,8 +20,7 @@ import java.util.UUID;
 public class Author {
 
     @Id
-    @GenericGenerator(name = "uuid2", strategy = "uuid2")
-    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "uuid2")
+    @GeneratedValue(generator = "uuid2")
     private UUID id;
 
     @NotNull
