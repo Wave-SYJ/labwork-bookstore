@@ -1,27 +1,53 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import NavBar from '../../components/GlobalNavBar';
 import styles from './style.module.scss';
-import { List, Input, Image, Button } from 'antd';
+import { List, Input, Image, Button, Pagination } from 'antd';
 import { SearchOutlined, PlusOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/router';
 const { Search } = Input;
 import { GetServerSideProps } from 'next';
 import { searchBook } from '../../api/book';
 import SearchBookPayload from '../../models/SearchBookPayload';
+import { makeUrl } from '../../utils/url';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const searchData = await searchBook();
+  console.log(context);
+  const pageNum = +(context.query?.pageNum || 1);
+  const pageSize = +(context.query?.pageSize || 10);
+  const keyword = context.query?.keyword as string;
+
+  const searchData = await searchBook(keyword, pageNum, pageSize);
 
   return {
     props: {
-      searchData
+      searchData,
+      keyword: keyword ?? null
     }
   };
 };
 
-export default function SearchPage({ searchData }: { searchData: SearchBookPayload }) {
+export default function SearchPage({ searchData, keyword }: { searchData: SearchBookPayload; keyword?: string }) {
   const router = useRouter();
-  console.log(searchData);
+
+  const handlePageChange = (pageNum: number, pageSize?: number) => {
+    router.push(
+      makeUrl('/search', {
+        pageNum: pageNum,
+        pageSize,
+        keyword
+      })
+    );
+  };
+
+  const handleSearch = (value: string) => {
+    router.push(
+      makeUrl('/search', {
+        pageNum: searchData.pageNum,
+        pageSize: searchData.pageSize,
+        keyword: value
+      })
+    );
+  };
 
   return (
     <>
@@ -29,7 +55,14 @@ export default function SearchPage({ searchData }: { searchData: SearchBookPaylo
 
       <div className={styles.searchWrapper}>
         <div style={{ display: 'flex' }}>
-          <Search prefix={<SearchOutlined />} placeholder='书名、作者、出版社、ISBN' enterButton='搜索' size='large' />
+          <Search
+            defaultValue={keyword}
+            prefix={<SearchOutlined />}
+            placeholder='书名、作者、出版社、ISBN'
+            enterButton='搜索'
+            size='large'
+            onSearch={handleSearch}
+          />
           <Button onClick={() => router.push('/add')} style={{ marginLeft: '10px' }} size='large'>
             添加书籍
           </Button>
@@ -94,6 +127,14 @@ export default function SearchPage({ searchData }: { searchData: SearchBookPaylo
                   </div>
                 </List.Item>
               )}
+            />
+
+            <Pagination
+              onChange={handlePageChange}
+              showSizeChanger
+              defaultCurrent={searchData.pageNum}
+              total={searchData.total}
+              defaultPageSize={searchData.pageSize}
             />
           </div>
         </div>

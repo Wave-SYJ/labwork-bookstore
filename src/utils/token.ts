@@ -3,7 +3,7 @@ import Cookies from 'js-cookie';
 
 export async function login(form: { username: String; password: String }, rememberMe: boolean) {
   const token = await loginApi(form, rememberMe);
-  Cookies.set('token', token.data, {
+  Cookies.set('token', token, {
     expires: 365 // token 何时过期由后端决定，这里赋一足够长的时间
   });
   mutateUser({ username: form.username });

@@ -10,7 +10,6 @@ export default function InputAuthors(props: { name: string }) {
           <>
             {fields.map(({ key, name, fieldKey, ...restField }) => (
               <Space key={key} align='baseline'>
-                {console.log(restField)}
                 <Form.Item {...restField} name={[name, 'country']} fieldKey={[fieldKey, 'country']}>
                   <Input placeholder='国家' />
                 </Form.Item>
