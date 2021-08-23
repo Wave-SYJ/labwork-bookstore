@@ -1,9 +1,6 @@
 package cn.edu.seu.bookstore.service.impl;
 
-import cn.edu.seu.bookstore.entity.Author;
-import cn.edu.seu.bookstore.entity.Author_;
-import cn.edu.seu.bookstore.entity.Book;
-import cn.edu.seu.bookstore.entity.Book_;
+import cn.edu.seu.bookstore.entity.*;
 import cn.edu.seu.bookstore.payload.SearchBookPayload;
 import cn.edu.seu.bookstore.repository.BookRepository;
 import cn.edu.seu.bookstore.service.BookService;
@@ -18,6 +15,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.*;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 
 import cn.edu.seu.bookstore.payload.SearchBookPayload.Statistics.StatisticsItem;
 
@@ -39,8 +37,8 @@ public class BookServiceImpl implements BookService {
         bookRepository.save(book);
     }
 
-    private Predicate buildPredicate(Root<Book> root, CriteriaQuery<?> query, CriteriaBuilder builder, String pattern) {
-        Subquery<String> subquery = query.subquery(String.class);
+    private Predicate buildPredicate(Root<Book> root, AbstractQuery<?> query, CriteriaBuilder builder, String pattern) {
+        Subquery<UUID> subquery = query.subquery(UUID.class);
         Root<Author> authorRoot = subquery.from(Author.class);
 
         return builder.or(
@@ -61,7 +59,16 @@ public class BookServiceImpl implements BookService {
 
     private SearchBookPayload.Statistics countBookLanguage(String keyword) {
         final String pattern = keyword == null ? "%%" : "%" + keyword + "%";
-        return new SearchBookPayload.Statistics("language", "语言");
+
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<StatisticsItem> criteria = criteriaBuilder.createQuery(StatisticsItem.class);
+        Root<Book> bookRoot = criteria.from(Book.class);
+        criteria.multiselect(bookRoot.get(Book_.LANGUAGE), criteriaBuilder.count(bookRoot))
+                .groupBy(bookRoot.get(Book_.LANGUAGE))
+                .where(buildPredicate(bookRoot, criteria, criteriaBuilder, pattern));
+
+        return new SearchBookPayload.Statistics("language", "语言",
+                entityManager.createQuery(criteria).getResultList());
     }
 
     private SearchBookPayload.Statistics countBookPress(String keyword) {
@@ -71,15 +78,31 @@ public class BookServiceImpl implements BookService {
         CriteriaQuery<StatisticsItem> criteria = criteriaBuilder.createQuery(StatisticsItem.class);
         Root<Book> bookRoot = criteria.from(Book.class);
         criteria.multiselect(bookRoot.get(Book_.PRESS), criteriaBuilder.count(bookRoot))
-                .groupBy(bookRoot.get(Book_.PRESS));
-        criteria.where(buildPredicate(bookRoot, criteria, criteriaBuilder, pattern));
+                .groupBy(bookRoot.get(Book_.PRESS))
+                .where(buildPredicate(bookRoot, criteria, criteriaBuilder, pattern));
 
         return new SearchBookPayload.Statistics("press", "出版社",
                 entityManager.createQuery(criteria).getResultList());
     }
 
     private SearchBookPayload.Statistics countBookCategory(String keyword) {
-        return new SearchBookPayload.Statistics("category", "分类");
+        final String pattern = keyword == null ? "%%" : "%" + keyword + "%";
+
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<StatisticsItem> criteria = criteriaBuilder.createQuery(StatisticsItem.class);
+        Root<Category> categoryRoot = criteria.from(Category.class);
+
+        Subquery<UUID> subquery = criteria.subquery(UUID.class);
+        Root<Book> bookRoot = subquery.from(Book.class);
+
+        criteria.multiselect(categoryRoot.get(Category_.NAME), criteriaBuilder.count(categoryRoot))
+                .groupBy(categoryRoot.get(Category_.NAME))
+                .where(criteriaBuilder.in(categoryRoot.get(Category_.BOOK)).value(
+                        subquery.select(bookRoot.get(Book_.ID)).where(buildPredicate(bookRoot, subquery, criteriaBuilder, pattern))
+                ));
+
+        return new SearchBookPayload.Statistics("category", "分类",
+                entityManager.createQuery(criteria).getResultList());
     }
 
     @Override
