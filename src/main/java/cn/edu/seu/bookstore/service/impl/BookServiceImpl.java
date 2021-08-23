@@ -64,6 +64,7 @@ public class BookServiceImpl implements BookService {
         CriteriaQuery<StatisticsItem> criteria = criteriaBuilder.createQuery(StatisticsItem.class);
         Root<Book> bookRoot = criteria.from(Book.class);
         criteria.multiselect(bookRoot.get(Book_.LANGUAGE), criteriaBuilder.count(bookRoot))
+                .orderBy(criteriaBuilder.desc(criteriaBuilder.count(bookRoot)))
                 .groupBy(bookRoot.get(Book_.LANGUAGE))
                 .where(buildPredicate(bookRoot, criteria, criteriaBuilder, pattern));
 
@@ -78,6 +79,7 @@ public class BookServiceImpl implements BookService {
         CriteriaQuery<StatisticsItem> criteria = criteriaBuilder.createQuery(StatisticsItem.class);
         Root<Book> bookRoot = criteria.from(Book.class);
         criteria.multiselect(bookRoot.get(Book_.PRESS), criteriaBuilder.count(bookRoot))
+                .orderBy(criteriaBuilder.desc(criteriaBuilder.count(bookRoot)))
                 .groupBy(bookRoot.get(Book_.PRESS))
                 .where(buildPredicate(bookRoot, criteria, criteriaBuilder, pattern));
 
@@ -96,6 +98,7 @@ public class BookServiceImpl implements BookService {
         Root<Book> bookRoot = subquery.from(Book.class);
 
         criteria.multiselect(categoryRoot.get(Category_.NAME), criteriaBuilder.count(categoryRoot))
+                .orderBy(criteriaBuilder.desc(criteriaBuilder.count(categoryRoot)))
                 .groupBy(categoryRoot.get(Category_.NAME))
                 .where(criteriaBuilder.in(categoryRoot.get(Category_.BOOK)).value(
                         subquery.select(bookRoot.get(Book_.ID)).where(buildPredicate(bookRoot, subquery, criteriaBuilder, pattern))
