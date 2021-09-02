@@ -9,7 +9,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/book")
@@ -28,6 +28,13 @@ public class BookController {
     @GetMapping
     public RestResult<SearchBookPayload> searchBook(String keyword, Integer pageNum, Integer pageSize) {
         return RestResult.success(bookService.searchBook(keyword, pageNum, pageSize));
+    }
+
+    @DeleteMapping
+    @Secured("ROLE_ADMIN")
+    public RestResult<Void> deleteBook(@RequestParam("id") UUID bookId) {
+        bookService.deleteBook(bookId);
+        return RestResult.success();
     }
 
 }

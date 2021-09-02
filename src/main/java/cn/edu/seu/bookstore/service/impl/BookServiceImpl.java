@@ -37,6 +37,11 @@ public class BookServiceImpl implements BookService {
         bookRepository.save(book);
     }
 
+    @Override
+    public void deleteBook(UUID bookId) {
+        bookRepository.deleteById(bookId);
+    }
+
     private Predicate buildPredicate(Root<Book> root, AbstractQuery<?> query, CriteriaBuilder builder, String pattern) {
         Subquery<UUID> subquery = query.subquery(UUID.class);
         Root<Author> authorRoot = subquery.from(Author.class);
