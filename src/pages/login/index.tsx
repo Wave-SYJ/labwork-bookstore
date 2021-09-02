@@ -5,10 +5,12 @@ import NavBar from '../../components/GlobalNavBar';
 import styles from './style.module.scss';
 
 import { login } from '../../utils/token';
+import router from 'next/router';
 
 export default function LoginPage() {
   const handleSubmit = async (values: any) => {
     await login(values, values.remember);
+    router.push('/cart');
     message.success('登录成功');
   };
 

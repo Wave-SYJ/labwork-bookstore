@@ -1,8 +1,8 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import NavBar from '../../components/GlobalNavBar';
 import styles from './style.module.scss';
 import { List, Input, Image, Button, Pagination, message, Modal } from 'antd';
-import { SearchOutlined, PlusOutlined, CloseOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import { SearchOutlined, PlusOutlined, CloseOutlined, ExclamationCircleOutlined, CheckOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/router';
 const { Search } = Input;
 import { GetServerSideProps } from 'next';
@@ -11,6 +11,7 @@ import SearchBookPayload from '../../models/SearchBookPayload';
 import { makeUrl } from '../../utils/url';
 import { useUser } from '../../api/auth';
 import Book from '../../models/Book';
+import { addBookToCart, getCartList, removeBookFromCart } from '../../utils/cart';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const pageNum = +(context.query?.pageNum || 1);
@@ -30,6 +31,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 export default function SearchPage({ searchData, keyword }: { searchData: SearchBookPayload; keyword?: string }) {
   const router = useRouter();
   const { user } = useUser();
+  const [cartList, setCartList] = useState([] as string[]);
+
+  useEffect(() => {
+    setCartList(getCartList());
+  }, []);
 
   const handlePageChange = (pageNum: number, pageSize?: number) => {
     router.push(
@@ -57,10 +63,21 @@ export default function SearchPage({ searchData, keyword }: { searchData: Search
       content: `是否要删除书籍《${book.title}》？`,
       icon: <ExclamationCircleOutlined />,
       async onOk() {
+        handleRemoveFromCart(book.id);
         await deleteBook(book.id);
         router.reload();
       }
     });
+  };
+
+  const handleAddToCart = (bookId: string) => {
+    addBookToCart(bookId);
+    setCartList(getCartList());
+  };
+
+  const handleRemoveFromCart = (bookId: string) => {
+    removeBookFromCart(bookId);
+    setCartList(getCartList());
   };
 
   return (
@@ -77,9 +94,11 @@ export default function SearchPage({ searchData, keyword }: { searchData: Search
             size='large'
             onSearch={handleSearch}
           />
-          <Button onClick={() => router.push('/add')} style={{ marginLeft: '10px' }} size='large'>
-            添加书籍
-          </Button>
+          {user?.role && (
+            <Button onClick={() => router.push('/add')} style={{ marginLeft: '10px' }} size='large'>
+              添加书籍
+            </Button>
+          )}
         </div>
         <div className={styles.paneWrapper}>
           <div className={styles.leftPanes}>
@@ -135,9 +154,15 @@ export default function SearchPage({ searchData, keyword }: { searchData: Search
                         </span>
                       ))}
                     </div>
-                    <Button icon={<PlusOutlined />} className={styles.bookAddCartBtn}>
-                      加入购物车
-                    </Button>
+                    {cartList.findIndex((bookId) => bookId === book.id) === -1 ? (
+                      <Button icon={<PlusOutlined />} className={styles.bookAddCartBtn} onClick={() => handleAddToCart(book.id)}>
+                        加入购物车
+                      </Button>
+                    ) : (
+                      <Button icon={<CheckOutlined />} className={styles.bookAddCartBtn} onClick={() => handleRemoveFromCart(book.id)}>
+                        已加入购物车
+                      </Button>
+                    )}
                     {user?.role && (
                       <Button danger icon={<CloseOutlined />} onClick={() => handleDeleteBook(book)} className={styles.deleteBookBtn}>
                         删除
