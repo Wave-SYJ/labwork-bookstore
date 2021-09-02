@@ -39,7 +39,7 @@
         display: flex;
 
         .bookDesc {
-          margin-left: 5px;
+          margin-left: 16px;
           flex: auto;
 
           .bookTitle {
@@ -72,6 +72,10 @@
 
           .bookAddCartBtn {
             margin-top: 10px;
+          }
+
+          .deleteBookBtn {
+            margin-left: 10px;
           }
         }
       }

@@ -1,17 +1,18 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment } from 'react';
 import NavBar from '../../components/GlobalNavBar';
 import styles from './style.module.scss';
-import { List, Input, Image, Button, Pagination } from 'antd';
-import { SearchOutlined, PlusOutlined } from '@ant-design/icons';
+import { List, Input, Image, Button, Pagination, message, Modal } from 'antd';
+import { SearchOutlined, PlusOutlined, CloseOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/router';
 const { Search } = Input;
 import { GetServerSideProps } from 'next';
-import { searchBook } from '../../api/book';
+import { deleteBook, searchBook } from '../../api/book';
 import SearchBookPayload from '../../models/SearchBookPayload';
 import { makeUrl } from '../../utils/url';
+import { useUser } from '../../api/auth';
+import Book from '../../models/Book';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  console.log(context);
   const pageNum = +(context.query?.pageNum || 1);
   const pageSize = +(context.query?.pageSize || 10);
   const keyword = context.query?.keyword as string;
@@ -28,6 +29,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 export default function SearchPage({ searchData, keyword }: { searchData: SearchBookPayload; keyword?: string }) {
   const router = useRouter();
+  const { user } = useUser();
 
   const handlePageChange = (pageNum: number, pageSize?: number) => {
     router.push(
@@ -47,6 +49,18 @@ export default function SearchPage({ searchData, keyword }: { searchData: Search
         keyword: value
       })
     );
+  };
+
+  const handleDeleteBook = (book: Book) => {
+    Modal.confirm({
+      title: '确认',
+      content: `是否要删除书籍《${book.title}》？`,
+      icon: <ExclamationCircleOutlined />,
+      async onOk() {
+        await deleteBook(book.id);
+        router.reload();
+      }
+    });
   };
 
   return (
@@ -124,6 +138,11 @@ export default function SearchPage({ searchData, keyword }: { searchData: Search
                     <Button icon={<PlusOutlined />} className={styles.bookAddCartBtn}>
                       加入购物车
                     </Button>
+                    {user?.role && (
+                      <Button danger icon={<CloseOutlined />} onClick={() => handleDeleteBook(book)} className={styles.deleteBookBtn}>
+                        删除
+                      </Button>
+                    )}
                   </div>
                 </List.Item>
               )}

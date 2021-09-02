@@ -24,3 +24,10 @@ export async function searchBook(keyword?: string, pageNum?: number, pageSize?: 
   });
   return data.data as SearchBookPayload;
 }
+
+export async function deleteBook(bookId: string) {
+  await request({
+    url: '/api/book?id=' + bookId,
+    method: 'delete'
+  });
+}
