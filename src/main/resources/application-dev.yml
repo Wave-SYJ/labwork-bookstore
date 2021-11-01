@@ -3,8 +3,8 @@ spring:
     add-properties: false
   datasource:
     url: jdbc:postgresql://localhost:5432/bookstore
-    username:
-    password:
+    username: root
+    password: postgres
 
   jpa:
     properties:
@@ -20,5 +20,5 @@ project:
   security:
     expiration: 3600
     expiration_remember: 604800
-    jwt_secret_key:
+    jwt_secret_key: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
     token_prefix: "Bearer "
