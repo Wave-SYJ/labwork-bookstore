@@ -6,6 +6,8 @@ import request from '../utils/request';
 import { ConfigProvider } from 'antd';
 import zhCN from 'antd/lib/locale/zh_CN';
 
+import 'antd/dist/antd.css';
+
 React.useLayoutEffect = React.useEffect;
 
 function App({ Component, pageProps }: AppProps) {
