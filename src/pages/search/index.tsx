@@ -111,7 +111,7 @@ export default function SearchPage({ searchData, keyword }: { searchData: Search
                   bordered
                   dataSource={paneData.items}
                   renderItem={(item) => (
-                    <List.Item key={item.id} className={styles.leftPaneListItem}>
+                    <List.Item key={item.id || item.category} className={styles.leftPaneListItem}>
                       <span className={styles.category}>{item.category}</span>
                       <span className={styles.count}>{item.count}</span>
                     </List.Item>
