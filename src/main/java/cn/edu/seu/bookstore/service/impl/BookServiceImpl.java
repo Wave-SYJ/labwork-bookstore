@@ -102,9 +102,9 @@ public class BookServiceImpl implements BookService {
         Subquery<UUID> subquery = criteria.subquery(UUID.class);
         Root<Book> bookRoot = subquery.from(Book.class);
 
-        criteria.multiselect(categoryRoot.get(Category_.NAME), criteriaBuilder.count(categoryRoot))
+        criteria.multiselect(categoryRoot.get(Category_.ID), categoryRoot.get(Category_.NAME), criteriaBuilder.count(categoryRoot))
                 .orderBy(criteriaBuilder.desc(criteriaBuilder.count(categoryRoot)))
-                .groupBy(categoryRoot.get(Category_.NAME))
+                .groupBy(categoryRoot.get(Category_.ID), categoryRoot.get(Category_.NAME))
                 .where(criteriaBuilder.in(categoryRoot.get(Category_.BOOK)).value(
                         subquery.select(bookRoot.get(Book_.ID)).where(buildPredicate(bookRoot, subquery, criteriaBuilder, pattern))
                 ));

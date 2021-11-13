@@ -18,7 +18,7 @@ logging:
 
 project:
   security:
-    expiration: 3600
-    expiration_remember: 604800
+    expiration: 3600000
+    expiration_remember: 604800000
     jwt_secret_key: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
     token_prefix: "Bearer "
