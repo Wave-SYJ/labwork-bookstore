@@ -8,8 +8,8 @@ services:
       POSTGRES_USER: root
       POSTGRES_DB: bookstore
       POSTGRES_PASSWORD: postgres
-    volumes:
-      - ./sql:/sql
+#    volumes:
+#      - "./sql:/docker-entrypoint-initdb.d"
     ports:
       - "5432:5432"
 
