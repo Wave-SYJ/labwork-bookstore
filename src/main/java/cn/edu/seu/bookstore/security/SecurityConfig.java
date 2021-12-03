@@ -1,10 +1,16 @@
 package cn.edu.seu.bookstore.security;
 
+import cn.edu.seu.bookstore.config.LoggerAspect;
+import cn.edu.seu.bookstore.config.PredefinedException;
+import cn.edu.seu.bookstore.payload.RestResult;
 import cn.edu.seu.bookstore.utils.SecurityUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -22,6 +28,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private SecurityUtils securityUtils;
+
+    @Autowired
+    private LoggerAspect loggerAspect;
+
+    private static final ObjectMapper objectMapper = new ObjectMapper();
 
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
@@ -42,8 +53,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 // 异常处理
-                .exceptionHandling().authenticationEntryPoint(new JwtAuthenticationEntryPoint())
-                .accessDeniedHandler(new JwtAccessDeniedHandler());
+                .exceptionHandling().authenticationEntryPoint((request, response, authException) -> {
+                    response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+                    objectMapper.writeValue(response.getOutputStream(), RestResult.failure(HttpStatus.UNAUTHORIZED, "请登录"));
+                    loggerAspect.logNotSuccess(SecurityConfig.class, new PredefinedException(HttpStatus.UNAUTHORIZED, "未登录"));
+                })
+                .accessDeniedHandler((request, response, accessDeniedException) -> {
+                    response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+                    objectMapper.writeValue(response.getOutputStream(), RestResult.failure(HttpStatus.FORBIDDEN, "无权限访问"));
+                    loggerAspect.logNotSuccess(SecurityConfig.class, new PredefinedException(HttpStatus.FORBIDDEN, "无权限访问"));
+                });
 
     }
 
