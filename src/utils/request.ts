@@ -4,7 +4,7 @@ import { getToken, logout } from './token';
 import { message } from 'antd';
 
 const instance = axios.create({
-  baseURL: 'http://localhost:8000'
+  baseURL: process.env.API_BASE_URL
 });
 
 instance.interceptors.request.use(function (request) {
