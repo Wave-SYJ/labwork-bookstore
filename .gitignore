@@ -36,4 +36,4 @@ src/main/generated
 src/test/generated
 
 ./docker-compose.yml
-
+src/main/resources/application-prod.yml
