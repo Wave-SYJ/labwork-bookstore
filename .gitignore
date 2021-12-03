@@ -34,3 +34,6 @@ build/
 
 src/main/generated
 src/test/generated
+
+./docker-compose.yml
+
