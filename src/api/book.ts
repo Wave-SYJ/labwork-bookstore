@@ -1,6 +1,7 @@
+import { NextApiRequestCookies } from 'next/dist/server/api-utils';
 import Book from '../models/Book';
 import SearchBookPayload from '../models/SearchBookPayload';
-import request from '../utils/request';
+import request, { withAuth } from '../utils/request';
 
 export async function insertBook(book: Book) {
   await request({
@@ -10,10 +11,10 @@ export async function insertBook(book: Book) {
   });
 }
 
-export async function searchBook(keyword?: string, pageNum?: number, pageSize?: number) {
+export async function searchBook(keyword?: string, pageNum?: number, pageSize?: number, cookies?: NextApiRequestCookies) {
   pageNum = pageNum ?? 1;
   pageSize = pageSize ?? 10;
-  const { data } = await request({
+  const { data } = await withAuth(request, {
     url: '/api/book',
     method: 'get',
     params: {
@@ -21,7 +22,7 @@ export async function searchBook(keyword?: string, pageNum?: number, pageSize?: 
       pageSize,
       keyword
     }
-  });
+  }, cookies);
   return data.data as SearchBookPayload;
 }
 

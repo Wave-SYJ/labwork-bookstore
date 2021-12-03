@@ -18,7 +18,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const pageSize = +(context.query?.pageSize || 10);
   const keyword = context.query?.keyword as string;
 
-  const searchData = await searchBook(keyword, pageNum, pageSize);
+
+  const searchData = await searchBook(keyword, pageNum, pageSize, context.req.cookies);
 
   return {
     props: {
