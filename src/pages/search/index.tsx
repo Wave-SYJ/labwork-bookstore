@@ -95,7 +95,7 @@ export default function SearchPage({ searchData, keyword }: { searchData: Search
             size='large'
             onSearch={handleSearch}
           />
-          {user?.role && (
+          {user?.role === 1 && (
             <Button onClick={() => router.push('/add')} style={{ marginLeft: '10px' }} size='large'>
               添加书籍
             </Button>
@@ -164,7 +164,7 @@ export default function SearchPage({ searchData, keyword }: { searchData: Search
                         已加入购物车
                       </Button>
                     )}
-                    {user?.role && (
+                    {user?.role === 1 && (
                       <Button danger icon={<CloseOutlined />} onClick={() => handleDeleteBook(book)} className={styles.deleteBookBtn}>
                         删除
                       </Button>

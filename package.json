@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "API_BASE_URL=http://localhost:8000 next dev",
+    "dev-win": "set API_BASE_URL=http://localhost:8000&& next dev",
     "build": "next build",
     "start": "API_BASE_URL=http://150.158.135.105:8000 next start",
     "lint": "next lint"
