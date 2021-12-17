@@ -1,4 +1,4 @@
-import { Button, Descriptions, Divider, Form, Input, message, Steps, Table } from 'antd';
+import { Button, Descriptions, Divider, Form, Input, List, message, Steps, Table } from 'antd';
 import React, { useState } from 'react';
 import styles from './style.module.scss';
 import NavBar from '../../components/GlobalNavBar';
@@ -8,8 +8,9 @@ import { findBook } from '../../api/book';
 import Book from '../../models/Book';
 import Decimal from 'decimal.js';
 import { LeftOutlined, RightOutlined, CheckOutlined } from '@ant-design/icons';
-import { submitOrder } from '../../api/cart';
+import { getMyOrders, submitOrder } from '../../api/order';
 import Router from 'next/router';
+import Order from '../../models/Order';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const cartList = getCartList(context.req.cookies);
@@ -22,8 +23,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     )
   );
 
+  const orders = await getMyOrders(context.req.cookies);
+
   return {
     props: {
+      orders,
       books,
       cartList,
       totalPrice: books
@@ -34,7 +38,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   };
 };
 
-export default function CheckoutPage({ cartList, books, totalPrice }: { cartList: CartItem[]; books: Book[]; totalPrice: string }) {
+export default function CheckoutPage({ orders, cartList, books, totalPrice }: { orders: Order[]; cartList: CartItem[]; books: Book[]; totalPrice: string }) {
   const [form] = Form.useForm();
   const [info, setInfo] = useState({
     targetPlace: '',
@@ -90,6 +94,34 @@ export default function CheckoutPage({ cartList, books, totalPrice }: { cartList
     }, 1000);
   };
 
+  const HistoryOrders = (
+    <List
+      pagination={{
+        pageSize: 3
+      }}
+      itemLayout='vertical'
+      size='large'
+      dataSource={orders}
+      renderItem={(order) => (
+        <List.Item>
+          <Descriptions title={order.book.title}>
+            <Descriptions.Item label='价格'>{order.book.price}</Descriptions.Item>
+            <Descriptions.Item label='作者'>
+              {order.book.authors.map((author) => (
+                <span key={author.id} className={styles.bookAuthor}>
+                  {author.country && `[${author.country}]`} {author.name} {author.role}
+                </span>
+              ))}
+            </Descriptions.Item>
+            <Descriptions.Item label='购买数量'>{order.number}</Descriptions.Item>
+            <Descriptions.Item label='送货地址'>{order.targetPlace}</Descriptions.Item>
+            <Descriptions.Item label='银行卡号'>{order.creditCard}</Descriptions.Item>
+          </Descriptions>
+        </List.Item>
+      )}
+    />
+  );
+
   return (
     <>
       <NavBar />
@@ -130,6 +162,8 @@ export default function CheckoutPage({ cartList, books, totalPrice }: { cartList
         </div>
 
         <Divider>以下为历史订单</Divider>
+
+        {HistoryOrders}
       </div>
     </>
   );
