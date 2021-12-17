@@ -152,4 +152,11 @@ public class BookServiceImpl implements BookService {
         book.setCount(book.getCount() - number);
         bookRepository.save(book);
     }
+
+    @Override
+    public void updateBookCount(UUID bookId, Integer count) {
+        Book book = bookRepository.getById(bookId);
+        book.setCount(count);
+        bookRepository.save(book);
+    }
 }

@@ -12,4 +12,6 @@ public interface BookService {
     Book findBook(UUID bookId);
     SearchBookPayload searchBook(String keyword, Integer pageNum, Integer pageSize);
     void reduceBook(UUID bookId, Integer number);
+
+    void updateBookCount(UUID bookId, Integer count);
 }

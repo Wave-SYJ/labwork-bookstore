@@ -9,6 +9,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -18,10 +19,19 @@ public class BookController {
     @Autowired
     private BookService bookService;
 
-    @PutMapping
+    @PostMapping
     @Secured("ROLE_ADMIN")
     public RestResult<Void> insertBook(@RequestBody @Valid Book book) {
         bookService.insertBook(book);
+        return RestResult.success();
+    }
+
+    @PostMapping("/number")
+    @Secured("ROLE_ADMIN")
+    public RestResult<Void> updateBookCount(@RequestBody Map<String, Object> body) {
+        UUID bookId = UUID.fromString((String) body.get("bookId"));
+        Integer count = (Integer) body.get("count");
+        bookService.updateBookCount(bookId, count);
         return RestResult.success();
     }
 
