@@ -6,6 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.UUID;
 
 @Entity
@@ -18,7 +19,7 @@ public class Order implements Serializable {
 
     private static final long serialVersionUID = 7864508686059107053L;
 
-    public Order(LocalDateTime time, Integer number, String targetPlace, String creditCard, UUID bookId, UUID userId) {
+    public Order(Date time, Integer number, String targetPlace, String creditCard, UUID bookId, UUID userId) {
         this.time = time;
         this.number = number;
         this.targetPlace = targetPlace;
@@ -33,7 +34,7 @@ public class Order implements Serializable {
 
     @NotNull
     @Column(name = "time", nullable = false)
-    private LocalDateTime time;
+    private Date time;
 
     @NotNull
     @Column(name = "number", nullable = false)

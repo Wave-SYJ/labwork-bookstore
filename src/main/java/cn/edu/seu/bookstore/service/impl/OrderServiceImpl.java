@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -30,7 +31,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> getOrdersByUserId(UUID userId) {
-        return orderRepository.findByUserId(userId);
+        List<Order> orders = orderRepository.findByUserId(userId);
+        orders.forEach(order -> order.getUser().setPassword(null));
+        return orders;
     }
 
     @Override
@@ -51,7 +54,7 @@ public class OrderServiceImpl implements OrderService {
 
         orderRepository.saveAll(
                 batchOrders.getItems().stream().map(orderItem ->
-                        new Order(LocalDateTime.now(), orderItem.getCount(), batchOrders.getTargetPlace(), batchOrders.getCreditCard(),
+                        new Order(new Date(), orderItem.getCount(), batchOrders.getTargetPlace(), batchOrders.getCreditCard(),
                                 orderItem.getId(), id)
                 ).collect(Collectors.toList())
         );
