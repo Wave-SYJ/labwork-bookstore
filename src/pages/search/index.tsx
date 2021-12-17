@@ -11,13 +11,12 @@ import SearchBookPayload from '../../models/SearchBookPayload';
 import { makeUrl } from '../../utils/url';
 import { useUser } from '../../api/auth';
 import Book from '../../models/Book';
-import { addBookToCart, getCartList, removeBookFromCart } from '../../utils/cart';
+import { addBookToCart, CartItem, getCartList, removeBookFromCart } from '../../utils/cart';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const pageNum = +(context.query?.pageNum || 1);
   const pageSize = +(context.query?.pageSize || 10);
   const keyword = context.query?.keyword as string;
-
 
   const searchData = await searchBook(keyword, pageNum, pageSize, context.req.cookies);
 
@@ -32,7 +31,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 export default function SearchPage({ searchData, keyword }: { searchData: SearchBookPayload; keyword?: string }) {
   const router = useRouter();
   const { user } = useUser();
-  const [cartList, setCartList] = useState([] as string[]);
+  const [cartList, setCartList] = useState([] as CartItem[]);
 
   useEffect(() => {
     setCartList(getCartList());
@@ -155,7 +154,9 @@ export default function SearchPage({ searchData, keyword }: { searchData: Search
                         </span>
                       ))}
                     </div>
-                    {cartList.findIndex((bookId) => bookId === book.id) === -1 ? (
+                    <div className='styles.bookCount'>数量：{book.count}</div>
+
+                    {cartList.findIndex((item) => item.id === book.id) === -1 ? (
                       <Button icon={<PlusOutlined />} className={styles.bookAddCartBtn} onClick={() => handleAddToCart(book.id)}>
                         加入购物车
                       </Button>

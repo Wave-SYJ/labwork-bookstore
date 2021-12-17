@@ -70,7 +70,7 @@ export default memo(function NavBar() {
               }
             >
               {user.role === ROLE_ADMIN && <Menu.Item key='/add'>添加书籍</Menu.Item>}
-              <Menu.Item key='/checkout'>结帐</Menu.Item>
+              <Menu.Item key='/checkout'>结账</Menu.Item>
               <Menu.Item key='logout'>退出</Menu.Item>
             </Menu.SubMenu>
           )}

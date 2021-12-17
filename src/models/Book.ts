@@ -11,4 +11,5 @@ export default interface Book {
   image: string;
   press: string;
   categories: Category[];
+  count: number;
 }

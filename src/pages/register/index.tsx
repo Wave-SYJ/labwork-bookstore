@@ -14,7 +14,7 @@ export default function RegisterPage() {
     await register(values);
     await login(values, false);
     message.success('注册成功');
-    // router.push('/cart');
+    router.push('/cart');
   };
 
   return (
