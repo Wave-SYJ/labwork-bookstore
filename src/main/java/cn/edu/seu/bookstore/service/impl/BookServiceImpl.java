@@ -1,5 +1,6 @@
 package cn.edu.seu.bookstore.service.impl;
 
+import cn.edu.seu.bookstore.config.PredefinedException;
 import cn.edu.seu.bookstore.entity.*;
 import cn.edu.seu.bookstore.payload.SearchBookPayload;
 import cn.edu.seu.bookstore.repository.BookRepository;
@@ -8,13 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.*;
 import java.util.LinkedList;
-import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import cn.edu.seu.bookstore.payload.SearchBookPayload.Statistics.StatisticsItem;
@@ -40,6 +42,14 @@ public class BookServiceImpl implements BookService {
     @Override
     public void deleteBook(UUID bookId) {
         bookRepository.deleteById(bookId);
+    }
+
+    @Override
+    public Book findBook(UUID bookId) {
+        Optional<Book> bookOptional = bookRepository.findById(bookId);
+        if (bookOptional.isEmpty())
+            throw new PredefinedException(HttpStatus.NOT_FOUND, "找不到书籍");
+        return bookOptional.get();
     }
 
     private Predicate buildPredicate(Root<Book> root, AbstractQuery<?> query, CriteriaBuilder builder, String pattern) {
@@ -134,5 +144,12 @@ public class BookServiceImpl implements BookService {
 
         payload.setStatistics(statistics);
         return payload;
+    }
+
+    @Override
+    public void reduceBook(UUID bookId, Integer number) {
+        Book book = bookRepository.getById(bookId);
+        book.setCount(book.getCount() - number);
+        bookRepository.save(book);
     }
 }

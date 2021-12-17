@@ -1,5 +1,6 @@
 package cn.edu.seu.bookstore.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,6 +22,10 @@ public class Book implements Serializable {
 
     private static final long serialVersionUID = 809494834345025947L;
 
+    public Book(UUID id) {
+        this.id = id;
+    }
+
     @Id
     @GeneratedValue(generator = "uuid2")
     private UUID id;
@@ -40,6 +45,7 @@ public class Book implements Serializable {
     private String isbn;
 
     @NotNull
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     @Column(name = "price", nullable = false, scale = 2)
     private BigDecimal price;
 
@@ -48,6 +54,9 @@ public class Book implements Serializable {
 
     @Column(name = "press")
     private String press;
+
+    @Column(name = "count")
+    private Integer count;
 
     @OneToMany(mappedBy = "book", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Category> categories;

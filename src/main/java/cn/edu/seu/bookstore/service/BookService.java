@@ -9,6 +9,7 @@ public interface BookService {
 
     void insertBook(Book book);
     void deleteBook(UUID bookId);
+    Book findBook(UUID bookId);
     SearchBookPayload searchBook(String keyword, Integer pageNum, Integer pageSize);
-
+    void reduceBook(UUID bookId, Integer number);
 }

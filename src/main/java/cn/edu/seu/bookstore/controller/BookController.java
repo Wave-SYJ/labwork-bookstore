@@ -30,6 +30,11 @@ public class BookController {
         return RestResult.success(bookService.searchBook(keyword, pageNum, pageSize));
     }
 
+    @GetMapping("/{bookId}")
+    public RestResult<Book> findBook(@PathVariable UUID bookId) {
+        return RestResult.success(bookService.findBook(bookId));
+    }
+
     @DeleteMapping
     @Secured("ROLE_ADMIN")
     public RestResult<Void> deleteBook(@RequestParam("id") UUID bookId) {

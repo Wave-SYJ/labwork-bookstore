@@ -26,6 +26,10 @@ public class User implements Serializable, UserDetails {
 
     private static final long serialVersionUID = -7394706769320382794L;
 
+    public User(UUID id) {
+        this.id = id;
+    }
+
     @Id
     @GeneratedValue(generator = "uuid2")
     private UUID id;
