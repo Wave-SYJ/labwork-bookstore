@@ -6,7 +6,7 @@ import request, { withAuth } from '../utils/request';
 export async function insertBook(book: Book) {
   await request({
     url: '/api/book',
-    method: 'put',
+    method: 'post',
     data: book
   });
 }
@@ -47,4 +47,15 @@ export async function findBook(bookId: string, cookies?: NextApiRequestCookies) 
     cookies
   );
   return data.data as Book;
+}
+
+export async function updateBookCount(bookId: string, count: number) {
+  await request({
+    url: '/api/book/number',
+    method: 'post',
+    data: {
+      bookId,
+      count
+    }
+  });
 }

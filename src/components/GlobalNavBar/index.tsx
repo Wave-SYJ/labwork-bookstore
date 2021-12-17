@@ -17,7 +17,10 @@ export default memo(function NavBar() {
   const { user } = useUser();
 
   const handleMenuClicked = ({ key }: { key: React.Key }) => {
-    if (key === 'logout') return logout();
+    if (key === 'logout') {
+      logout();
+      return router.push('/home');
+    }
     router.push(key as string);
   };
 

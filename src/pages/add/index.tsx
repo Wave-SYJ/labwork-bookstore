@@ -39,6 +39,9 @@ export default function CheckoutPage() {
             <Form.Item label='价格' name='price' rules={[{ required: true, message: '请输入 ISBN' }]}>
               <InputNumber min={0} precision={2} step={0.01} />
             </Form.Item>
+            <Form.Item label='数量' name='count' rules={[{ required: true, message: '请输入数量' }]}>
+              <InputNumber min={1} precision={0} step={1} />
+            </Form.Item>
             <Form.Item label='图片' name='image'>
               <Input />
             </Form.Item>

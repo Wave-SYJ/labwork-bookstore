@@ -1,12 +1,12 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import NavBar from '../../components/GlobalNavBar';
 import styles from './style.module.scss';
-import { List, Input, Image, Button, Pagination, message, Modal } from 'antd';
-import { SearchOutlined, PlusOutlined, CloseOutlined, ExclamationCircleOutlined, CheckOutlined } from '@ant-design/icons';
+import { List, Input, Image, Button, Pagination, InputNumber, Modal, message } from 'antd';
+import { SearchOutlined, PlusOutlined, CloseOutlined, ExclamationCircleOutlined, CheckOutlined, EditOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/router';
 const { Search } = Input;
 import { GetServerSideProps } from 'next';
-import { deleteBook, searchBook } from '../../api/book';
+import { deleteBook, searchBook, updateBookCount } from '../../api/book';
 import SearchBookPayload from '../../models/SearchBookPayload';
 import { makeUrl } from '../../utils/url';
 import { useUser } from '../../api/auth';
@@ -80,9 +80,35 @@ export default function SearchPage({ searchData, keyword }: { searchData: Search
     setCartList(getCartList());
   };
 
+  const [modalVisible, setModalVisible] = useState(false);
+  const [tmpBookInfo, setTmpBookInfo] = useState({
+    bookId: '',
+    count: 0
+  });
+
+  const handleUpdateBookNumber = async () => {
+    await updateBookCount(tmpBookInfo.bookId, tmpBookInfo.count);
+    message.success('修改成功');
+    router.reload();
+  };
+
   return (
     <>
       <NavBar />
+
+      <Modal title='设置书籍数量' visible={modalVisible} onOk={handleUpdateBookNumber} onCancel={() => setModalVisible(false)}>
+        <InputNumber
+          size='large'
+          min={1}
+          value={tmpBookInfo.count}
+          onChange={(value) =>
+            setTmpBookInfo({
+              ...tmpBookInfo,
+              count: value
+            })
+          }
+        />
+      </Modal>
 
       <div className={styles.searchWrapper}>
         <div style={{ display: 'flex' }}>
@@ -166,9 +192,24 @@ export default function SearchPage({ searchData, keyword }: { searchData: Search
                       </Button>
                     )}
                     {user?.role === 1 && (
-                      <Button danger icon={<CloseOutlined />} onClick={() => handleDeleteBook(book)} className={styles.deleteBookBtn}>
-                        删除
-                      </Button>
+                      <>
+                        <Button
+                          icon={<EditOutlined />}
+                          onClick={() => {
+                            setTmpBookInfo({
+                              bookId: book.id,
+                              count: book.count
+                            });
+                            setModalVisible(true);
+                          }}
+                          className={styles.deleteBookBtn}
+                        >
+                          修改数量
+                        </Button>
+                        <Button danger icon={<CloseOutlined />} onClick={() => handleDeleteBook(book)} className={styles.deleteBookBtn}>
+                          删除
+                        </Button>
+                      </>
                     )}
                   </div>
                 </List.Item>

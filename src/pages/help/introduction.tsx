@@ -27,7 +27,7 @@ export default function HelpPage() {
             </tr>
             <tr>
               <th>开发人员：</th>
-              <tr>71119115 孙雨佳</tr>
+              <tr>71119113 李锐 71119114 宋重阳 71119115 孙雨佳 71119116 朱嘉梁</tr>
             </tr>
             <tr>
               <th>已具备条件：</th>
@@ -39,7 +39,7 @@ export default function HelpPage() {
             </tr>
             <tr>
               <th>项目预计完成日期：</th>
-              <tr>2021年11月27日</tr>
+              <tr>2021年12月27日</tr>
             </tr>
           </table>
         </Paragraph>
