@@ -36,7 +36,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   };
 };
 
-export default function bookDetail({ book }: { book: Book }) {
+export default function BookDetail({ book }: { book: Book }) {
   const router = useRouter();
   const { user } = useUser();
   const [purNum, setPurNum] = useState(1)
