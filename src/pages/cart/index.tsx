@@ -5,7 +5,7 @@ export default function index() {
   return (
     <>
       <NavBar />
-      测试一下
+      
     </>
   );
 }
