@@ -157,7 +157,7 @@ export default function SearchPage({ searchData, keyword }: { searchData: Search
                 <List.Item className={styles.book} key={book.id}>
                   <Image height={175} width={175} alt='book image' src={book.image} />
                   <div className={styles.bookDesc}>
-                    <div className={styles.bookTitle}>{book.title}</div>
+                    <a onClick={()=>{router.push(`/book/${book.id}`)}} className={styles.bookTitle}>{book.title}</a>
                     <div className={styles.bookPrice}>¥ {book.price}</div>
                     <div className={styles.bookAuthors}>
                       {book.authors.map((author) => (

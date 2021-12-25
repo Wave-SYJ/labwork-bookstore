@@ -20,23 +20,20 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   // const pageSize = +(context.query?.pageSize || 10);
   // const keyword = context.query?.keyword as string;
   const bookId = context.query?.id as string;
-
-  let book;
-
-  try {
-    book = await findBook(bookId, context.req.cookies);
-  } catch (err) {
+  let cartList = getCartList(context.req.cookies);
+  const book = await findBook(bookId, context.req.cookies);
+  let num=0;
+  for (const item of cartList) {
+    if(item.id===book.id)num+=item.count    
   }
-  console.log("book", book);
-
   return {
     props: {
-      book,
+      book:{...book,purNum:num}
     }
   };
 };
 
-export default function BookDetail({ book }: { book: Book }) {
+export default function BookDetail({ book }: { book:any }) {
   const router = useRouter();
   const { user } = useUser();
   const [purNum, setPurNum] = useState(1)
@@ -44,12 +41,10 @@ export default function BookDetail({ book }: { book: Book }) {
 
 
   const handleAdd= async()=>{
-    await updateBookCount(book.id,purNum);
+    await addBookToCart(book.id,purNum);
     message.success(`添加成功${purNum}本${book.title}`);
     router.reload();
   }
-
-  console.log("book", book);
 
   return (
     <>
@@ -95,10 +90,16 @@ export default function BookDetail({ book }: { book: Book }) {
             <div className={styles.priceWrapper}>
               ¥  {book.price}
             </div>
+
+            <div style={{padding:"4px",color:"#b4b4b4"}}>
+              {`已加入购物车${book.purNum}本，商品库存：${book.count}`}
+            </div>
+            
             <div className={styles.pur}>
-                <InputNumber style={{marginRight:"10px"}} size="large" min={1} onChange={setPurNum}></InputNumber>
+                <InputNumber defaultValue={1} style={{marginRight:"10px"}} size="large" min={1} max={book.count-book.purNum} onChange={setPurNum}></InputNumber>
                 <Button size="large" onClick={handleAdd}><strong>加入购物车</strong></Button>
             </div>
+            
           </div>
         </div>
       </div>
